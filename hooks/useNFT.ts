@@ -17,7 +17,7 @@ export const useNFT = (wallet) => {
   const [loadingMulesOwned, setLoadingMulesOwned] = useState(false);
 
   useEffect(() => {
-    if (window.ethereum) {
+    if (window.ethereum && window.ethereum.isMetaMask) {
       const provider = new ethers.providers.Web3Provider(
         window.ethereum,
         "any"
@@ -34,9 +34,11 @@ export const useNFT = (wallet) => {
   }, [wallet]);
 
   const getSupply = useCallback(async () => {
-    await co
-      .totalSupply()
-      .then((supply) => setSupply(ethers.utils.formatUnits(supply, 0)));
+    if (window.ethereum && window.ethereum.isMetaMask) {
+      await co
+        .totalSupply()
+        .then((supply) => setSupply(ethers.utils.formatUnits(supply, 0)));
+    }
   }, [co]);
 
   const getMetadata = useCallback(async (munkId) => {
@@ -107,7 +109,7 @@ export const useNFT = (wallet) => {
   const checkChain = "0xfa2" == chain;
 
   useEffect(() => {
-    if (window.ethereum) {
+    if (window.ethereum && window.ethereum.isMetaMask) {
       window.ethereum.on("chainChanged", listeringChangeChain);
       if (co) {
         getChain();
@@ -119,7 +121,7 @@ export const useNFT = (wallet) => {
     }
 
     return () => {
-      window.ethereum.removeListener("chainChanged", listeringChangeChain);
+      window.ethereum?.removeListener("chainChanged", listeringChangeChain);
     };
   }, [checkChain, co, getChain, getMulesOwned, getSupply]);
 

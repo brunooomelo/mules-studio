@@ -29,7 +29,7 @@ export function WalletProvider({ children }: WalletProviderProps) {
   const [balance, setBalance] = useState(0);
 
   const checkIsConnected = async () => {
-    if (window.ethereum) {
+    if (window.ethereum && window.ethereum.isMetaMask) {
       const accounts = await window.ethereum.request({
         method: "eth_accounts",
       });
@@ -50,9 +50,8 @@ export function WalletProvider({ children }: WalletProviderProps) {
         params: [{ chainId: `0x${Number(4002).toString(16)}` }],
       });
     } catch (error) {
-      console.log(error.message);
-      toast.error("Request pending");
       if (error.message.includes("already pending")) {
+        toast.error("Request pending");
       }
     }
   }
@@ -70,7 +69,7 @@ export function WalletProvider({ children }: WalletProviderProps) {
 
   const getBalance = () => {
     window.ethereum
-      .request({ method: "eth_getBalance", params: [wallet, "latest"] })
+      ?.request({ method: "eth_getBalance", params: [wallet, "latest"] })
       .then((balance) => {
         setBalance(Number(ethers.utils.formatUnits(balance, "ether")));
       });
@@ -79,7 +78,7 @@ export function WalletProvider({ children }: WalletProviderProps) {
   useEffect(() => {
     checkIsConnected();
     return () => {
-      window.ethereum.removeListener("accountsChanged", handleAccountChanged);
+      window.ethereum?.removeListener("accountsChanged", handleAccountChanged);
     };
   }, []);
 
