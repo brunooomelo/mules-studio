@@ -8,13 +8,14 @@ import { StatusMint } from "@components/StatusMint";
 import { useMintInput } from "hooks/useMintInput";
 import { useNFT } from "hooks/useNFT";
 import { useWallet } from "provider/WalletProvider";
+import { useCountDown } from "hooks/useCountDown";
 
 const Home: NextPage = () => {
   const { wallet, balance, changeNetwork, eth } = useWallet();
   const { decrease, setField, value, increment } = useMintInput(1);
-  const { mulesOwned, supply, mint, checkChain } = useNFT(wallet);
+  const { mulesOwned, supply, mint, checkChain, isSoldOut } = useNFT(wallet);
+  const { remainingTime, isEnabled: isEnableSale } = useCountDown();
   const onMint = () => mint.call(value);
-
   return (
     <div className="w-full xl:container xl:mx-auto">
       <Header />
@@ -24,7 +25,16 @@ const Home: NextPage = () => {
         </h1>
       )}
       <main className="flex flex-col items-center bg-secondary py-20 xl:flex-row xl:rounded-2xl">
-        <div className="">
+        <div className="relative">
+          {isEnableSale && (
+            <div className="absolute  rounded-3xl bg-red-600 p-8 text-white font-bold text-5xl top-[50%] w-full  text-center">
+              <h1 className="">SALES STILL CLOSED.</h1>
+              <span>
+                {remainingTime.days} D : {remainingTime.hours} H :{" "}
+                {remainingTime.minutes} M : {remainingTime.seconds} S
+              </span>
+            </div>
+          )}
           <div className="px-4 text-center">
             <h1 className="text-4xl sm:text-5xl font-bold text-white">
               Welcome to Mule Studio
@@ -54,6 +64,8 @@ const Home: NextPage = () => {
                     handleMint={onMint}
                     loading={mint.loading}
                     hasBalance={Boolean(balance > 1.5)}
+                    disabled={!isEnableSale}
+                    soldOut={isSoldOut}
                   />
                   <PriceMint />
                 </>
@@ -94,10 +106,15 @@ const Home: NextPage = () => {
                 />
               );
             })}
+          {!mulesOwned.data.length && (
+            <h1 className="text-white font-bold text-2xl border-4 border-white p-4 rounded-xl">
+              You don't have Mules :({" "}
+            </h1>
+          )}
         </div>
       </div>
       <footer className="flex justify-center text-s font-bold text-gray-800 p-4">
-        <p>Mule Studios since 2021</p>
+        <p>Mules Studios since 2021</p>
       </footer>
     </div>
   );

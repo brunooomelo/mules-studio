@@ -5,7 +5,7 @@ import toast from "react-hot-toast";
 import abi from "../abi.json";
 
 const contractAddress = process.env.NEXT_PUBLIC_CONTRACT_ADDRESS;
-
+const MAX_SUPPLY = 1337;
 export const useNFT = (wallet) => {
   const [c, setC] = useState(null);
   const [co, setContract] = useState(null);
@@ -107,7 +107,6 @@ export const useNFT = (wallet) => {
   };
 
   const checkChain = "0xfa2" == chain;
-
   useEffect(() => {
     if (window.ethereum && window.ethereum.isMetaMask) {
       window.ethereum.on("chainChanged", listeringChangeChain);
@@ -127,6 +126,7 @@ export const useNFT = (wallet) => {
 
   return {
     supply,
+    isSoldOut: Number(supply) === MAX_SUPPLY,
     mulesOwned: {
       data: mulesOwned,
       quantity: mulesQuantity,
