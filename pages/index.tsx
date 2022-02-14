@@ -26,8 +26,8 @@ const Home: NextPage = () => {
       )}
       <main className="flex flex-col items-center bg-secondary py-20 xl:flex-row xl:rounded-2xl">
         <div className="relative">
-          {isEnableSale && (
-            <div className="absolute  rounded-3xl bg-red-600 p-8 text-white font-bold text-5xl top-[50%] w-full  text-center">
+          {!isEnableSale && (
+            <div className="absolute rounded-3xl bg-red-600 p-8 text-white font-bold md:text-5xl top-[50%] w-full text-center">
               <h1 className="">SALES STILL CLOSED.</h1>
               <span>
                 {remainingTime.days} D : {remainingTime.hours} H :{" "}
