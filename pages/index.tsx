@@ -108,7 +108,7 @@ const Home: NextPage = () => {
             })}
           {!mulesOwned.data.length && (
             <h1 className="text-white font-bold text-2xl border-4 border-white p-4 rounded-xl">
-              You don't have Mules :({" "}
+              You don&apos;t have Mules :({" "}
             </h1>
           )}
         </div>
