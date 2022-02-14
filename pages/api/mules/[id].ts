@@ -47,9 +47,7 @@ export default async function handler(req, res) {
       .then(async () => {
         const metadata = await Promise.race(
           gateways.map((link) =>
-            fetch(
-              `${link}/QmeThUMLHiC3HLdAv2RY3vt3nf4BxXruhR2d7R3tp8jXDo/${id}.json`
-            )
+            fetch(`${link}/${process.env.NEXT_PUBLIC_CID}/${id}.json`)
           )
         ).then((response) => response.json());
         return res.status(200).json(metadata);
