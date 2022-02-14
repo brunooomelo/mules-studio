@@ -35,7 +35,7 @@ const Home: NextPage = () => {
               Fantom Network
             </p>
           </div>
-          {!isEnableSale ? (
+          {!isEnableSale && (
             <div className="rounded-3xl border-4 border-white p-8 text-white font-bold md:text-5xl w-3/4 mx-auto text-center my-4">
               <h1 className="">OPEN SALES IN</h1>
               <span>
@@ -43,7 +43,8 @@ const Home: NextPage = () => {
                 {remainingTime.minutes} M : {remainingTime.seconds} S
               </span>
             </div>
-          ) : (
+          )}
+          {isEnableSale && (
             <div className="lg:flex w-full justify-center">
               <div
                 className={`flex flex-col items-center ${
