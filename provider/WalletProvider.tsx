@@ -7,6 +7,7 @@ import {
   useState,
 } from "react";
 import toast from "react-hot-toast";
+import { network } from "utils/networkUtils";
 
 type WalletContextType = {
   wallet: string | null;
@@ -40,7 +41,7 @@ export function WalletProvider({ children }: WalletProviderProps) {
   };
   const requestAccount = useCallback(async () => {
     if (!window.ethereum?.isMetaMask) {
-      toast.error("Metamask not found, please install Metamask wallet        ");
+      toast.error("Metamask not found, please install Metamask wallet");
       return;
     }
     const accounts = await eth?.request({ method: "eth_requestAccounts" });
@@ -49,13 +50,13 @@ export function WalletProvider({ children }: WalletProviderProps) {
 
   async function changeNetwork() {
     if (!window.ethereum?.isMetaMask) {
-      toast.error("Metamask not found, please install Metamask wallet        ");
+      toast.error("Metamask not found, please install Metamask wallet");
       return;
     }
     try {
       await window.ethereum?.request({
         method: "wallet_switchEthereumChain",
-        params: [{ chainId: `0x${Number(4002).toString(16)}` }],
+        params: [{ chainId: network }],
       });
     } catch (error) {
       if (error.message.includes("already pending")) {

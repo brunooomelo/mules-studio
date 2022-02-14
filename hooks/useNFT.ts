@@ -2,6 +2,7 @@ import { ethers } from "ethers";
 
 import { useState, useEffect, useCallback } from "react";
 import toast from "react-hot-toast";
+import { network } from "utils/networkUtils";
 import abi from "../abi.json";
 
 const contractAddress = process.env.NEXT_PUBLIC_CONTRACT_ADDRESS;
@@ -106,7 +107,7 @@ export const useNFT = (wallet) => {
     setChain(chainId);
   };
 
-  const checkChain = "0xfa2" == chain;
+  const checkChain = network == chain;
   useEffect(() => {
     if (window.ethereum && window.ethereum.isMetaMask) {
       window.ethereum.on("chainChanged", listeringChangeChain);
