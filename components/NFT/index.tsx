@@ -2,13 +2,14 @@ interface NFTProps {
   url: string;
   name?: string;
   id?: string;
+  rounded?: boolean;
 }
 
-export function NFT({ url, name, id }: NFTProps) {
+export function NFT({ url, name, id, rounded }: NFTProps) {
   return (
     <div className="w-full max-w-[300px] flex flex-col items-center">
       <img
-        className="rounded-3xl"
+        className={rounded && "rounded-3xl"}
         src={url}
         alt={name ? name : "Mule Studio Loading"}
       />

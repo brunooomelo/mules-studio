@@ -3,7 +3,7 @@ import { ethers } from "ethers";
 import { useState, useEffect, useCallback } from "react";
 import toast from "react-hot-toast";
 import { network } from "utils/networkUtils";
-import abi from "../abi.json";
+import abi from "../contract/abi/Mules.json";
 
 const contractAddress = process.env.NEXT_PUBLIC_CONTRACT_ADDRESS;
 const MAX_SUPPLY = 1337;
@@ -123,7 +123,7 @@ export const useNFT = (wallet) => {
     return () => {
       window.ethereum?.removeListener("chainChanged", listeringChangeChain);
     };
-  }, [checkChain, co, getChain, getMulesOwned, getSupply]);
+  }, [checkChain, co, getChain, getMulesOwned, getSupply, wallet]);
 
   return {
     supply,

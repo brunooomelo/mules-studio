@@ -88,10 +88,7 @@ const Home: NextPage = () => {
         <div className="flex flex-wrap justify-center w-full gap-3 py-8 ">
           {mulesOwned.loading &&
             Array.from({ length: mulesOwned.quantity }).map((_, index) => (
-              <NFT
-                key={index}
-                url="https://res.cloudinary.com/practicaldev/image/fetch/s--bIcIUu5D--/c_limit%2Cf_auto%2Cfl_progressive%2Cq_auto%2Cw_880/https://thepracticaldev.s3.amazonaws.com/i/t7u2rdii5u9n4zyqs2aa.jpg"
-              />
+              <NFT key={index} url="/mule.gif" />
             ))}
           {!mulesOwned.loading &&
             mulesOwned.data.map(({ image, id, name }) => {
@@ -104,10 +101,11 @@ const Home: NextPage = () => {
                   )}
                   name={name}
                   id={id}
+                  rounded
                 />
               );
             })}
-          {!mulesOwned.data.length && (
+          {!mulesOwned.loading && !mulesOwned.data.length && (
             <h1 className="text-white font-bold text-2xl border-4 border-white p-4 rounded-xl">
               You don&apos;t have Mules :({" "}
             </h1>
