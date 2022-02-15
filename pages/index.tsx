@@ -28,7 +28,7 @@ const Home: NextPage = () => {
         <div className="">
           <div className="px-4 text-center">
             <h1 className="text-4xl sm:text-5xl font-bold text-white">
-              Welcome to Mule Studio
+              Welcome to Mules Collection
             </h1>
             <p className="w-3/4 mx-auto text-white my-5 text-center text-base sm:text-xl">
               Mules is a collection of 1337 uniquely and randomly NFTs stored on
