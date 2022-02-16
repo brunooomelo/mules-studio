@@ -49,7 +49,11 @@ export default async function handler(req, res) {
           gateways.map((link) =>
             fetch(`${link}/${process.env.NEXT_PUBLIC_CID}/${id}.json`)
           )
-        ).then((response) => response.json());
+        )
+          .then((response) => response.json())
+          .catch(() => {
+            res.status(500).json({ error: "fetch image" });
+          });
         return res.status(200).json(metadata);
       })
       .catch(() => {
