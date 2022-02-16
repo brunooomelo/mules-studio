@@ -45,10 +45,8 @@ export default async function handler(req, res) {
     return contract
       .ownerOf(id)
       .then(async () => {
-        const metadata = await Promise.race(
-          gateways.map((link) =>
-            fetch(`${link}/${process.env.NEXT_PUBLIC_CID}/${id}.json`)
-          )
+        const metadata = fetch(
+          `https://gateway.pinata.cloud/ipfs/${process.env.NEXT_PUBLIC_CID}/${id}.json`
         )
           .then((response) => response.json())
           .catch(() => {
