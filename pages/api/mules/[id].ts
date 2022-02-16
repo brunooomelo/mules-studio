@@ -45,14 +45,16 @@ export default async function handler(req, res) {
     return contract
       .ownerOf(id)
       .then(async () => {
-        const metadata = fetch(
+        await fetch(
           `https://gateway.pinata.cloud/ipfs/${process.env.NEXT_PUBLIC_CID}/${id}.json`
         )
           .then((response) => response.json())
+          .then((metadata) => {
+            res.status(200).json(metadata);
+          })
           .catch(() => {
-            return res.status(500).json({ error: "fetch image" });
+            res.status(500).json({ error: "fetch image" });
           });
-        return res.status(200).json(metadata);
       })
       .catch(() => {
         res.status(404).json({
