@@ -81,7 +81,11 @@ const Home: NextPage = () => {
             </div>
           )}
         </div>
-        <img className="lg:w-[450px]" src="preview.png" alt="preview mule" />
+        <img
+          className="w-[300px] lg:w-[500px] rounded-lg"
+          src="banner.gif"
+          alt="preview mule"
+        />
       </main>
       <div className="flex flex-col items-center pt-20">
         <h1 className="text-4xl font-bold text-white">Your Mules</h1>
