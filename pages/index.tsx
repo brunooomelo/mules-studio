@@ -68,6 +68,7 @@ const Home: NextPage = () => {
                       soldOut={isSoldOut}
                     />
                     <PriceMint />
+                    <a href="https://ftmscan.com/token/0xf51639d93963cdd0caac89c1161f00651e1e0f3e" className="text-center text-sm text-gray-100">Check contract</a>
                   </>
                 ) : (
                   <button
