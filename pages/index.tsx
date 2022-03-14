@@ -102,7 +102,7 @@ const Home: NextPage = () => {
                   key={id}
                   url={image.replace(
                     "ipfs://",
-                    "https://gateway.pinata.cloud/ipfs/"
+                    "https://ipfs-cache.nftquery.io/ipfs/"
                   )}
                   name={name}
                   id={id}
