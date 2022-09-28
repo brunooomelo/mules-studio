@@ -7,7 +7,7 @@ import {
   useState,
 } from "react";
 import toast from "react-hot-toast";
-import { network } from "utils/networkUtils";
+import { chainNetwork, network } from "utils/networkUtils";
 
 type WalletContextType = {
   wallet: string | null;
@@ -34,6 +34,8 @@ export function WalletProvider({ children }: WalletProviderProps) {
       const accounts = await window.ethereum.request({
         method: "eth_accounts",
       });
+
+      console.log("checkIsConnected", accounts);
       setAccount(accounts);
       window.ethereum.addListener("accountsChanged", handleAccountChanged);
       setEth(window.ethereum);
@@ -59,6 +61,16 @@ export function WalletProvider({ children }: WalletProviderProps) {
         params: [{ chainId: network }],
       });
     } catch (error) {
+      if (error.code === 4902) {
+        try {
+          await window.ethereum.request({
+            method: "wallet_addEthereumChain",
+            params: [chainNetwork],
+          });
+        } catch (addError) {
+          // handle "add" error
+        }
+      }
       if (error.message.includes("already pending")) {
         toast.error("Request pending");
       }
@@ -76,6 +88,7 @@ export function WalletProvider({ children }: WalletProviderProps) {
     setAccount(accounts);
   };
 
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   const getBalance = () => {
     window.ethereum
       ?.request({ method: "eth_getBalance", params: [wallet, "latest"] })
@@ -92,8 +105,10 @@ export function WalletProvider({ children }: WalletProviderProps) {
   }, []);
 
   useEffect(() => {
-    getBalance();
-  }, [wallet]);
+    if (wallet) {
+      getBalance();
+    }
+  }, [getBalance, wallet]);
 
   return (
     <WalletContext.Provider
