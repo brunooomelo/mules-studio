@@ -2,10 +2,9 @@ import { ethers } from "ethers";
 
 import { useState, useEffect, useCallback } from "react";
 import toast from "react-hot-toast";
-import { network } from "utils/networkUtils";
+import { contractAddress, network } from "utils/networkUtils";
 import abi from "../contract/abi/Mules.json";
 
-const contractAddress = process.env.NEXT_PUBLIC_CONTRACT_ADDRESS;
 const MAX_SUPPLY = 1337;
 export const useNFT = (wallet) => {
   const [c, setC] = useState(null);

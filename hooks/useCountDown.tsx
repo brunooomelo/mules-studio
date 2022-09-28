@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { getRemainingTimeUntilMsTimestamp } from "utils/CountDownTimerUtils";
-import { isAfter } from "date-fns";
+import { itsTimeForPublicSales, publicSale } from "utils/networkUtils";
 
 const defaultRemainingTime = {
   seconds: "00",
@@ -11,9 +11,7 @@ const defaultRemainingTime = {
 
 export function useCountDown() {
   const [remainingTime, setRemainingTime] = useState(defaultRemainingTime);
-  const [isEnabled, setEnabled] = useState(() =>
-    isAfter(new Date(), new Date(process.env.NEXT_PUBLIC_PUBLIC_SALES))
-  );
+  const [isEnabled, setEnabled] = useState(() => itsTimeForPublicSales);
 
   function updateRemainingTime(countdown) {
     setRemainingTime(getRemainingTimeUntilMsTimestamp(countdown));
@@ -21,7 +19,7 @@ export function useCountDown() {
   useEffect(() => {
     const timer = setInterval(() => {
       if (!isEnabled) {
-        const datePublicSales = new Date(process.env.NEXT_PUBLIC_PUBLIC_SALES);
+        const datePublicSales = new Date(publicSale);
         updateRemainingTime(datePublicSales);
         setEnabled(new Date() > datePublicSales);
       }
