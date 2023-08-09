@@ -1,4 +1,4 @@
-# Mules Studio 👨💻🏠
+# Mules Studio 🐴
 
 ![GitHub last commit (branch)](https://img.shields.io/github/last-commit/brunooomelo/mules-studio/main)
 ![GitHub contributors](https://img.shields.io/github/contributors/brunooomelo/mules-studio)
