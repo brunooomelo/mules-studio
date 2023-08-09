@@ -7,6 +7,9 @@
     "start": "next start",
     "lint": "next lint"
   },
+  "engines": {
+    "node": "ˆ16"
+  },
   "dependencies": {
     "cors": "^2.8.5",
     "date-fns": "^2.30.0",
