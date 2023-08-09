@@ -7,7 +7,7 @@
 
 ## About the Project 🎯
 
-[wip]
+I've built a community of Mule NFTs featuring 1337 unique units on the Fantom blockchain. I used Next.js, Tailwind CSS, and the powerful API routes of Next to bring this project to life. Each Mule NFT is a celebration of our connection to these adorable animals and blockchain technology. Join us on this fun journey as we explore the charm of mules and the innovation of blockchain.
 
 ---
 
