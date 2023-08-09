@@ -8,7 +8,7 @@
     "lint": "next lint"
   },
   "engines": {
-    "node": "ˆ16"
+    "node": "18"
   },
   "dependencies": {
     "cors": "^2.8.5",
