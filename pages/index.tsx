@@ -15,6 +15,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { MintForm } from "@components/MintForm";
 import { contractAddress, abi } from "utils/networkUtils";
+import { productionChain } from "config/wagmi";
 
 const Home: NextPage = () => {
   const { connect } = useConnect({
@@ -34,7 +35,7 @@ const Home: NextPage = () => {
   });
 
   const { isLoading, switchNetwork } = useSwitchNetwork({
-    chainId: 4002,
+    chainId: productionChain.id,
   });
 
   return (
@@ -57,11 +58,11 @@ const Home: NextPage = () => {
                 !!chain && "mt-20"
               } justify-around h-64 lg:w-96 xl:mt-10`}
             >
-              {!!chain && isConnected && (
+              {chain?.id === productionChain.id && isConnected && (
                 <>
                   <StatusMint supply={supply} />
                   <MintForm
-                    balance={Number(balance.data.formatted)}
+                    balance={Number(balance.data?.formatted)}
                     isSoldOut={supply === 1337}
                   />
                   <PriceMint />
@@ -73,7 +74,7 @@ const Home: NextPage = () => {
                   </Link>
                 </>
               )}
-              {chain?.id !== 4002 && isConnected && (
+              {chain?.id !== productionChain.id && isConnected && (
                 <button
                   className="max-w-[270px] px-14 py-2 rounded-xl bg-orange-400 text-white font-bold"
                   onClick={() => switchNetwork()}

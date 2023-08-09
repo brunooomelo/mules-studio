@@ -4,8 +4,9 @@ import { publicProvider } from "wagmi/providers/public";
 
 const isProduction = process.env.NODE_ENV === "production";
 
+export const productionChain = isProduction ? fantom : fantomTestnet;
 const { publicClient, webSocketPublicClient } = configureChains(
-  [isProduction ? fantom : fantomTestnet],
+  [productionChain],
   [publicProvider()]
 );
 
