@@ -1,4 +1,5 @@
-import { useWallet } from "provider/WalletProvider";
+import { useAccount, useConnect, useEnsName } from "wagmi";
+import { InjectedConnector } from "wagmi/connectors/injected";
 
 const WalletSimplify = (account) => {
   return (
@@ -8,14 +9,19 @@ const WalletSimplify = (account) => {
   );
 };
 export function ConnectButton() {
-  const { wallet, requestAccount } = useWallet();
+  const { address, isConnected } = useAccount();
+  const { data: ensName } = useEnsName({ address });
+  const { connect } = useConnect({
+    connector: new InjectedConnector(),
+  });
+
   return (
     <button
       className="text-white font-bold bg-yellow-900 bg-opacity-80 py-2 px-10 rounded-xl"
-      onClick={requestAccount}
-      disabled={!!wallet}
+      onClick={() => connect()}
+      disabled={!!isConnected}
     >
-      {wallet ? WalletSimplify(wallet) : "Connect"}
+      {isConnected ? ensName ?? WalletSimplify(address) : "Connect"}
     </button>
   );
 }

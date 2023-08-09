@@ -2,6 +2,9 @@
 const nextConfig = {
   reactStrictMode: true,
   jsconfigPaths: true,
+  images: {
+    domains: ["ipfs.io"],
+  },
   async headers() {
     return [
       {
@@ -22,6 +25,6 @@ const nextConfig = {
       },
     ];
   },
-}
+};
 
-module.exports = nextConfig
+module.exports = nextConfig;

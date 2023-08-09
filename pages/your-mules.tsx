@@ -1,72 +1,48 @@
 import type { NextPage } from "next";
 import { Header } from "@components/Header";
 import { NFT } from "@components/NFT";
-import { useMintInput } from "hooks/useMintInput";
-import { useNFT } from "hooks/useNFT";
-import { useWallet } from "provider/WalletProvider";
+import { useAccount, useContractRead } from "wagmi";
+import { abi, contractAddress } from "utils/networkUtils";
+
+const getMetadata = async (muleId) => {
+  const response = await fetch(`/api/mules/${muleId}`);
+  if (response.status === 200) {
+    let data = await response.json();
+    data = {
+      ...data,
+      id: muleId,
+    };
+    return data;
+  } else if (muleId > 0 && response.status === 500) {
+    return getMetadata(muleId);
+  }
+  return null;
+};
 
 const Home: NextPage = () => {
-  const { wallet, changeNetwork, eth, requestAccount } = useWallet();
-  const { mulesOwned, checkChain } = useNFT(wallet);
+  const { address } = useAccount();
+  const mules = useContractRead({
+    address: contractAddress,
+    abi,
+    functionName: "MulesOwned",
+    args: [address],
+    select: (mules: string[]): number[] => {
+      return mules.map(Number);
+    },
+  });
+
   return (
     <div className="w-full xl:container xl:mx-auto">
       <Header />
-      {!eth?.isMetaMask && (
-        <h1 className="text-xl p-20 md:text-5xl font-bold text-white text-center">
-          Metamask not found, please install Metamask wallet
-        </h1>
-      )}
-
-      {(!checkChain || !wallet) && (
-        <div className="lg:flex w-full justify-center">
-          <div
-            className={`flex flex-col items-center ${
-              checkChain && "mt-20"
-            } justify-around h-64 lg:w-96 xl:mt-10`}
-          >
-            {!checkChain && wallet && (
-              <button
-                className="max-w-[270px] px-14 py-2 rounded-xl bg-orange-400 text-white font-bold"
-                onClick={changeNetwork}
-              >
-                Change to Fantom Opera Network
-              </button>
-            )}
-            {!wallet && (
-              <button
-                className="max-w-[270px] px-14 py-2 rounded-xl bg-orange-400 text-white font-bold"
-                onClick={requestAccount}
-              >
-                Connect
-              </button>
-            )}
-          </div>
-        </div>
-      )}
-      {checkChain && wallet && (
+      {address && (
         <div className="flex flex-col items-center pt-20">
           <h1 className="text-4xl font-bold text-white">Your Mules</h1>
-          <div className="flex flex-wrap justify-center w-full gap-3 py-8 ">
-            {mulesOwned.loading &&
-              Array.from({ length: mulesOwned.quantity }).map((_, index) => (
-                <NFT key={index} url="/mule.gif" />
-              ))}
-            {!mulesOwned.loading &&
-              mulesOwned.data.map(({ image, id, name }) => {
-                return (
-                  <NFT
-                    key={id}
-                    url={image.replace(
-                      "ipfs://",
-                      "https://ipfs-cache.nftquery.io/ipfs/"
-                    )}
-                    name={name}
-                    id={id}
-                    rounded
-                  />
-                );
+          <div className="flex flex-wrap justify-center w-full gap-3 py-8">
+            {mules.isSuccess &&
+              mules.data.map((muleId) => {
+                return <NFT key={muleId} id={muleId} />;
               })}
-            {!mulesOwned.loading && !mulesOwned.data.length && (
+            {!mules.isSuccess && !mules.data?.length && (
               <h1 className="text-white font-bold text-2xl border-4 border-white p-4 rounded-xl">
                 You don&apos;t have Mules :({" "}
               </h1>

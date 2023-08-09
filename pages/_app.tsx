@@ -1,8 +1,9 @@
 import "../styles/globals.css";
 import type { AppProps } from "next/app";
 import { Toaster } from "react-hot-toast";
-import { WalletProvider } from "../provider/WalletProvider";
 import Head from "next/head";
+import { WagmiConfig } from "wagmi";
+import { config } from "../config/wagmi";
 
 function MyApp({ Component, pageProps }: AppProps) {
   return (
@@ -11,9 +12,10 @@ function MyApp({ Component, pageProps }: AppProps) {
         <title>Mules Studio</title>
         <meta name="viewport" content="initial-scale=1.0, width=device-width" />
       </Head>
-      <WalletProvider>
+
+      <WagmiConfig config={config}>
         <Component {...pageProps} />
-      </WalletProvider>
+      </WagmiConfig>
       <Toaster
         position="top-center"
         gutter={8}
